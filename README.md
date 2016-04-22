@@ -1,10 +1,10 @@
 > EXPERIMENTAL / DRAFT
 
-# JsZipper : Play2 Json advanced (& monadic) manipulations
+# JsZipper : Play2 Json advanced (& monadic) manipulations [![Build Status](https://travis-ci.org/michaelahlers/mandubian-play-json-zipper.svg?branch=v1.2-play23)](https://travis-ci.org/michaelahlers/mandubian-play-json-zipper)
 
 > `JsZipper` is a new tool allowing much more complex & powerful manipulations of Json structures for Play2/Json API:
 
-> `JsZipper` is inspired by the [Zipper](http://en.wikipedia.org/wiki/Zipper_\(data_structure\)) concept introduced by [Gerard Huet](http://en.wikipedia.org/wiki/G%C3%A9rard_Huet) in 1997. 
+> `JsZipper` is inspired by the [Zipper](http://en.wikipedia.org/wiki/Zipper_\(data_structure\)) concept introduced by [Gerard Huet](http://en.wikipedia.org/wiki/G%C3%A9rard_Huet) in 1997.
 
 >The Zipper allows to update immutable traversable structures in an efficient way. Json is an immutable AST so it fits well. FYI, the Zipper behaves like a loupe that walks through each node of the AST (left/right/up/down) while keeping aware of the nodes on its left, its right and its upper. The interesting idea behind the loupe is that when it targets a node, it can modify and even delete the focused node. The analogy to the pants zipper is quite good too because when it goes down the tree, it behaves as if it was <i>opening</i> the tree to be able to drive the loupe through all nodes and when it goes up, it <i>closes</i> back the tree... I won't tell more here, it would be too long.
 
@@ -52,7 +52,7 @@ js: play.api.libs.json.JsObject = {"key1":{"key11":"TO_FIND","key12":123,"key13"
 
 # Basic manipulations
 
-## Setting multiple paths/values 
+## Setting multiple paths/values
 
 ```scala
 scala> js.set(
@@ -78,8 +78,8 @@ res2: play.api.libs.json.JsValue = {"key1":{"key11":"TO_FIND"},"key2":123,"key3"
 ```scala
 scala> js.findAll( (_,v) => v == JsString("TO_FIND") ).toList
 res5: List[(play.api.libs.json.JsPath, play.api.libs.json.JsValue)] = List(
-  (/key1/key11,"TO_FIND"), 
-  (/key4(0),"TO_FIND"), 
+  (/key1/key11,"TO_FIND"),
+  (/key4(0),"TO_FIND"),
   (/key4(3)/key411/key4111,"TO_FIND")
 )
 ```
@@ -109,7 +109,7 @@ res1: play.api.libs.json.JsValue = {"key1":{"key11":"TO_FIND","key12":123,"key13
 ## Creating an object from scratch
 
 ```scala
-scala> val build = JsExtensions.buildJsObject( 
+scala> val build = JsExtensions.buildJsObject(
   __ \ "key1" \ "key11" -> JsString("toto"),
   __ \ "key1" \ "key12" -> JsNumber(123L),
   (__ \ "key2")(0)      -> JsBoolean(true),
@@ -123,7 +123,7 @@ build: play.api.libs.json.JsValue = {"key1":{"key11":"toto","key12":123},"key3":
 
 > Let's use `Future` as our Monad because it's... coooool to do things in the future ;)
 
-Imagine you call several services returning `Future[JsValue]` and you want to build/update a `JsObject` from it. 
+Imagine you call several services returning `Future[JsValue]` and you want to build/update a `JsObject` from it.
 Until now, if you wanted to do that with Play2/Json, it was quite tricky and required some code.
 
 Here is what you can do now.
