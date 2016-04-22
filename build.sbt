@@ -55,6 +55,15 @@ libraryDependencies ++=
 
 publishMavenStyle := true
 
+/** Test artifacts are desired (as additional examples). */
+publishArtifact in Test := true
+
+publishTo := {
+  val host = "https://oss.sonatype.org"
+  if (isSnapshot.value) Some("snapshots" at s"$host/content/repositories/snapshots")
+  else Some("releases" at s"$host/service/local/staging/deploy/maven2")
+}
+
 val root =
   (project in file(".")).
     enablePlugins(BuildInfoPlugin).
