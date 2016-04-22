@@ -1,8 +1,6 @@
-organization := "com.mandubian"
+organization := "com.github.michaelahlers"
 
 name    := "play-json-zipper"
-
-//version := "1.2"
 
 resolvers ++= Seq(
   "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
@@ -22,9 +20,4 @@ libraryDependencies ++= Seq(
 
 publishMavenStyle := true
 
-seq(bintraySettings:_*)
-
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
-
-bintray.Keys.packageLabels in bintray.Keys.bintray :=
-  Seq("play-json", "zipper", "monad", "functional programming", "scala")
