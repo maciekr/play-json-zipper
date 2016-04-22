@@ -28,10 +28,21 @@ scalaVersion := "2.11.8"
 /* TODO: Eventually enable fatal warnings. */
 scalacOptions ++=
   "-feature" ::
-    "-target:jvm-1.8" ::
     // "-Xlint" ::
     // "-Xfatal-warnings" ::
     Nil
+
+scalacOptions ++=
+  (CrossVersion.partialVersion(scalaVersion.value) match {
+
+    case Some((2, minor)) if 11 <= minor =>
+      "-target:jvm-1.8" ::
+        Nil
+
+    case _ =>
+      Nil
+
+  })
 
 scalacOptions in Test ++=
   Nil
