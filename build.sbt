@@ -21,3 +21,11 @@ libraryDependencies ++= Seq(
 publishMavenStyle := true
 
 licenses += "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
+
+val root =
+  (project in file(".")).
+    enablePlugins(BuildInfoPlugin).
+    settings(
+      buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+      buildInfoPackage := "play.api.libs.json.zippers"
+    )
