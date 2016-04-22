@@ -14,10 +14,10 @@ crossScalaVersions := Seq("2.10.6", "2.11.8")
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json" % "2.3.10",
-  "org.specs2" %% "specs2" % "2.3.12" % "test",
-  "junit" % "junit" % "4.8" % "test"
+  "org.specs2" %% "specs2" % "2.3.13" % "test",
+  "junit" % "junit" % "4.12" % "test"
 )
 
 publishMavenStyle := true
 
-licenses +=("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
+licenses += "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
