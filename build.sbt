@@ -2,7 +2,7 @@ organization := "com.mandubian"
 
 name    := "play-json-zipper"
 
-version := "1.2"
+//version := "1.2"
 
 resolvers ++= Seq(
   "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
