@@ -64,9 +64,9 @@ libraryDependencies ++=
     "junit" % "junit" % "4.12" % Test ::
     Nil
 
-artifact in(Compile, packageBin) := {
+artifact := {
   val previous: Artifact = (artifact in(Compile, packageBin)).value
-  previous.copy(classifier = Some("play-23"))
+  previous.copy(classifier = Some("play23"))
 }
 
 publishMavenStyle := true
