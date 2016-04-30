@@ -89,7 +89,7 @@ releaseProcess :=
     setReleaseVersion,
     commitReleaseVersion,
     tagRelease,
-    ReleaseStep(action = Command.process("sonatypeOpen", _)),
+    ReleaseStep(action = Command.process("sonatypeOpen", "")),
     ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
     setNextVersion,
     commitNextVersion,
