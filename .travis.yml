@@ -6,7 +6,7 @@ jdk:
 sudo: false
 
 script:
-- sbt ;+test;+publish
+- sbt ';+test;+publish'
 
 cache:
   directories:
