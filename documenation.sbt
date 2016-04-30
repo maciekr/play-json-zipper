@@ -1,11 +1,4 @@
-scalacOptions in(Compile, doc) ++=
-  "-author" ::
-    "-groups" ::
-    "-implicits" ::
-    "-no-link-warnings" ::
-    Nil
-
-scalacOptions in(Test, doc) ++=
+scalacOptions in doc ++=
   "-author" ::
     "-groups" ::
     "-implicits" ::
@@ -27,7 +20,7 @@ apiMappings ++= {
 
   /** Several of these may not be used in this project as this is a reusable set of mappings. */
   val mappings: Seq[(File, URL)] =
-      mappingsFor("com.typesafe.play", List("play-json"), "http://playframework.com/documentation/${revision}/api/scala/index.html", _.replaceAll("[\\d]$", "x"))
+    mappingsFor("com.typesafe.play", List("play-json"), "http://playframework.com/documentation/${revision}/api/scala/index.html", _.replaceAll("[\\d]$", "x"))
 
   mappings.toMap
 }
