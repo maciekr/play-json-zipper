@@ -4,10 +4,13 @@ jdk:
 - oraclejdk8
 
 scala:
-- 2.10.6
+# - 2.10.6
 - 2.11.8
 
 sudo: false
+
+script:
+- sbt +test
 
 cache:
   directories:
@@ -15,7 +18,7 @@ cache:
   - $HOME/.sbt/boot/
 
 after_success:
-- 'sbt publish'
+- 'sbt +publish'
 
 env:
   global:
