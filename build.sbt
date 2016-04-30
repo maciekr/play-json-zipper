@@ -70,7 +70,7 @@ publishMavenStyle := true
 publishArtifact in Test := true
 
 /** On `sonatypeOpen`, SBT Sonatype sets this appropriately. For all other cases, send to snapshots. */
-publishTo := Some("releases" at "https://oss.sonatype.org/content/repositories/snapshots")
+publishTo := Some("releases" at "https://oss.sonatype.org/content/repositories/snapshots").filter(_ => isSnapshot.value)
 
 //publishTo := {
 //  val host = "https://oss.sonatype.org"
