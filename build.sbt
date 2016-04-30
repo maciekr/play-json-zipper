@@ -69,11 +69,32 @@ publishMavenStyle := true
 /** Test artifacts are desired (as additional examples). */
 publishArtifact in Test := true
 
-publishTo := {
-  val host = "https://oss.sonatype.org"
-  if (isSnapshot.value) Some("snapshots" at s"$host/content/repositories/snapshots")
-  else Some("releases" at s"$host/service/local/staging/deploy/maven2")
-}
+/** On `sonatypeOpen`, SBT Sonatype sets this appropriately. For all other cases, send to snapshots. */
+publishTo := Some("releases" at "https://oss.sonatype.org/content/repositories/snapshots")
+
+//publishTo := {
+//  val host = "https://oss.sonatype.org"
+//  if (isSnapshot.value) Some("snapshots" at s"$host/content/repositories/snapshots")
+//  else Some("releases" at s"$host/service/local/staging/deploy/maven2")
+//}
+
+import ReleaseTransformations._
+
+releaseProcess :=
+  Seq[ReleaseStep](
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    runTest,
+    setReleaseVersion,
+    commitReleaseVersion,
+    tagRelease,
+    ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
+    setNextVersion,
+    commitNextVersion,
+    ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true),
+    pushChanges
+  )
 
 val root =
   (project in file(".")).
