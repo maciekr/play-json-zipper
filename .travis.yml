@@ -6,15 +6,12 @@ jdk:
 sudo: false
 
 script:
-- sbt +test
+- sbt ;+test;+publish
 
 cache:
   directories:
   - $HOME/.ivy2/cache
   - $HOME/.sbt/boot/
-
-after_success:
-- 'sbt +publish'
 
 env:
   global:
