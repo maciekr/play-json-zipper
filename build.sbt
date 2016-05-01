@@ -69,14 +69,7 @@ publishMavenStyle := true
 /** Test artifacts are desired (as additional examples). */
 publishArtifact in Test := true
 
-/** On `sonatypeOpen`, SBT Sonatype sets this appropriately. For all other cases, send to snapshots. */
-publishTo := Some("releases" at "https://oss.sonatype.org/content/repositories/snapshots").filter(_ => isSnapshot.value)
-
-//publishTo := {
-//  val host = "https://oss.sonatype.org"
-//  if (isSnapshot.value) Some("snapshots" at s"$host/content/repositories/snapshots")
-//  else Some("releases" at s"$host/service/local/staging/deploy/maven2")
-//}
+publishTo := Some("releases" at "https://oss.sonatype.org/content/repositories/snapshots")
 
 import ReleaseTransformations._
 
@@ -89,8 +82,22 @@ releaseProcess :=
     setReleaseVersion,
     commitReleaseVersion,
     tagRelease,
-    ReleaseStep(action = Command.process("""sonatypeOpen """"", _), enableCrossBuild = true),
-    ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
+    ReleaseStep(
+      action = { state: State =>
+        /* FIXME: Reassigns this setting globally for the current session. */
+        publishTo := Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
+
+        Command.process(
+          "publishSigned", {
+            /* TODO: Stop being dumb and learn how to do this properly. */
+            // val extracted = Project.extract(state)
+            // extracted.append((publishTo := Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")) :: Nil, state)
+            state
+          }
+        )
+      },
+      enableCrossBuild = true
+    ),
     setNextVersion,
     commitNextVersion,
     ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true),
