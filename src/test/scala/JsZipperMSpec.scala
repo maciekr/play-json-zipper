@@ -29,7 +29,7 @@ object JsZipperMSpec extends Specification {
       zipper.parents must beEqualTo(Stream.Empty)
       zipper.parent must beEqualTo(Node.Empty)
       zipper.root.value must beEqualTo(js)
-      
+
       val JsZipper(node, lefts, rights, parents) = zipper
       node must beEqualTo(Node(js))
       lefts must beEqualTo(Stream.Empty)
@@ -42,7 +42,7 @@ object JsZipperMSpec extends Specification {
       down10.focus must beEqualTo(Node("key1", Json.obj("key11" -> "value11", "key12" -> 123L, "key13" -> JsNull)))
       down10.parent must beEqualTo(Node(js))
       down10.left must beEqualTo(JsZipper.Empty)
-      
+
       val down11 = down10.right
       val JsZipper(node11, lefts11, rights11, parents11) = down11
 
@@ -155,7 +155,7 @@ object JsZipperMSpec extends Specification {
 
     "update node" in {
       val zipper = JsZipperM[Option](js)
-      
+
       val z = zipper.down.right.update(Some(JsString("toto")))
 
       z.map(_.root.value) must beEqualTo(Some(Json.obj(
@@ -169,7 +169,7 @@ object JsZipperMSpec extends Specification {
 
     "insertLeft node" in {
       val zipper = JsZipperM[Option](js)
-      
+
       val z = zipper.down.right.right.right.down.right.insertValueLeft(Some(JsString("toto")))
 
       z.map(_.root.value) must beEqualTo(Some(Json.obj(
@@ -183,7 +183,7 @@ object JsZipperMSpec extends Specification {
 
     "insertRight node" in {
       val zipper = JsZipperM[Option](js)
-      
+
       val z = zipper.down.right.right.right.down.right.insertValueRight(Some(JsString("toto")))
 
       z.map(_.root.value) must beEqualTo(Some(Json.obj(
@@ -207,8 +207,8 @@ object JsZipperMSpec extends Specification {
 
       val js = Json.obj(
         "key1" -> Json.obj(
-          "key11" -> "TO_FIND", 
-          "key12" -> 123L, 
+          "key11" -> "TO_FIND",
+          "key12" -> 123L,
           "key13" -> JsNull
         ),
         "key2" -> 123,
@@ -241,8 +241,8 @@ object JsZipperMSpec extends Specification {
     "find all" in {
       val js = Json.obj(
         "key1" -> Json.obj(
-          "key11" -> "TO_FIND", 
-          "key12" -> 123L, 
+          "key11" -> "TO_FIND",
+          "key12" -> 123L,
           "key13" -> JsNull
         ),
         "key2" -> 123,
@@ -257,7 +257,7 @@ object JsZipperMSpec extends Specification {
           (__ \ 'key4)(3) \ 'key411 \ 'key4111 -> JsString("TO_FIND")
         )
       )
-      JsZipperM[Option](js).findAllByPathValue{ (path, value) => 
+      JsZipperM[Option](js).findAllByPathValue{ (path, value) =>
         path == (__ \ 'key4)(3) \ 'key411 \ 'key4111 && value == JsString("TO_FIND")
       }.map(_.pathValue).toList must beEqualTo(
         List(
@@ -269,8 +269,8 @@ object JsZipperMSpec extends Specification {
     "find & update by value" in {
       val js = Json.obj(
         "key1" -> Json.obj(
-          "key11" -> "TO_FIND", 
-          "key12" -> 123L, 
+          "key11" -> "TO_FIND",
+          "key12" -> 123L,
           "key13" -> JsNull
         ),
         "key2" -> 123,
@@ -280,15 +280,15 @@ object JsZipperMSpec extends Specification {
 
       val zipper = JsZipperM[Option](js)
 
-      val res = 
+      val res =
         zipper.findByValue( _ == JsString("TO_FIND") )
-              .update{ (js: JsValue) => 
-                val JsString(str) = js; Some(JsString(str + "2")) 
+              .update{ (js: JsValue) =>
+                val JsString(str) = js; Some(JsString(str + "2"))
               }.map(_.root)
       res.map(_.focus.value) must beEqualTo(Some(Json.obj(
         "key1" -> Json.obj(
-          "key11" -> "TO_FIND2", 
-          "key12" -> 123L, 
+          "key11" -> "TO_FIND2",
+          "key12" -> 123L,
           "key13" -> JsNull
         ),
         "key2" -> 123,
@@ -300,8 +300,8 @@ object JsZipperMSpec extends Specification {
     "multiple find update by value" in {
       val js = Json.obj(
         "key1" -> Json.obj(
-          "key11" -> "TO_FIND", 
-          "key12" -> 123L, 
+          "key11" -> "TO_FIND",
+          "key12" -> 123L,
           "key13" -> JsNull
         ),
         "key2" -> 123,
@@ -341,7 +341,7 @@ object JsZipperMSpec extends Specification {
 
       zipper.createOrUpdatePath(
         __ \ "key1" \ "key11",
-        { (js:JsValue) => 
+        { (js:JsValue) =>
           val JsString(str) = js
           Some(JsString(str+ "_toto"))
         }
@@ -354,7 +354,7 @@ object JsZipperMSpec extends Specification {
 
       zipper.createOrUpdatePath(
         __ \ "key2",
-        { (js:JsValue) => 
+        { (js:JsValue) =>
           val JsNumber(nb) = js
           Some(JsNumber(nb + 5))
         }
@@ -364,10 +364,10 @@ object JsZipperMSpec extends Specification {
         "key3" -> true,
         "key4" -> Json.arr("value41", 345.6, "test", Json.obj("key411" -> Json.obj("key4111" -> 987.654)))
       )))
-      
+
       zipper.createOrUpdatePath(
         (__ \ "key4")(1),
-        { (js:JsValue) => 
+        { (js:JsValue) =>
           val JsNumber(nb) = js
           Some(JsNumber(nb + 3.0))
         }
@@ -380,7 +380,7 @@ object JsZipperMSpec extends Specification {
 
       zipper.createOrUpdatePath(
         (__ \ "key4")(3) \ "key411" \ "key4111",
-        { (js:JsValue) => 
+        { (js:JsValue) =>
           val JsNumber(nb) = js
           Some(JsNumber(nb + 3.0))
         }
@@ -393,7 +393,7 @@ object JsZipperMSpec extends Specification {
 
       zipper.createOrUpdatePath(
         __,
-        { (js:JsValue) => 
+        { (js:JsValue) =>
           Some(JsString("toto"))
         }
       ).map(_.value) must beEqualTo(Some(JsString("toto")))
@@ -411,19 +411,19 @@ object JsZipperMSpec extends Specification {
 
     "create from scratch" in {
       JsZipperM[Option](Json.obj())
-        .createOrUpdatePath( 
+        .createOrUpdatePath(
           __ \ "key1" \ "key11", (_:JsValue) => Some(JsString("toto")) ).map(_.value) must beEqualTo(
           Some(Json.obj("key1" -> Json.obj("key11" -> "toto")))
         )
 
       JsZipperM[Option](Json.obj())
-        .createOrUpdatePath( 
+        .createOrUpdatePath(
           (__ \ "key1")(0) \ "key11", (_:JsValue) => Some(JsString("toto")) ).map(_.value) must beEqualTo(
           Some(Json.obj("key1" -> Json.arr(Json.obj("key11" -> "toto"))))
         )
 
       JsZipperM[Option](Json.obj())
-        .createOrUpdatePath( 
+        .createOrUpdatePath(
           (__ \ "key1")(1) \ "key11", (_:JsValue) => Some(JsNumber(123L)) ).map(_.value) must beEqualTo(
           Some(Json.obj("key1" -> Json.arr(Json.obj("key11" -> 123L))))
         )
@@ -435,7 +435,7 @@ object JsZipperMSpec extends Specification {
     }
 
     "build" in {
-      JsZipperM.buildJsObject[Option]( 
+      JsZipperM.buildJsObject[Option](
         __ \ "key1" \ "key11" -> Some(JsString("toto")),
         __ \ "key1" \ "key12" -> Some(JsNumber(123L)),
         (__ \ "key2")(0)      -> Some(JsBoolean(true)),
@@ -466,8 +466,8 @@ object JsZipperMSpec extends Specification {
 
     "update node" in {
       val zipper = JsZipperM[Future](js)
-      
-      val z = zipper.down.right.update(future{ JsString("toto") })
+
+      val z = zipper.down.right.update(Future{ JsString("toto") })
 
       Await.result(z.map(_.root.value), Duration("2 seconds")) must beEqualTo(Json.obj(
         "key1" -> Json.obj("key11" -> "value11", "key12" -> 123L, "key13" -> JsNull),
@@ -479,10 +479,10 @@ object JsZipperMSpec extends Specification {
 
     "update by path" in {
       Await.result(JsZipperM[Future](js).createOrUpdate(
-        __ \ "key1" \ "key11" -> future{ JsString("toto") },
-        __ \ "key1" \ "key12" -> future{ JsNumber(234) },
-        (__ \ "key4")(0)      -> future{ JsBoolean(true) },
-        (__ \ "key4")(2)      -> future{ Json.arr(1, 2, 3) }
+        __ \ "key1" \ "key11" -> Future{ JsString("toto") },
+        __ \ "key1" \ "key12" -> Future{ JsNumber(234) },
+        (__ \ "key4")(0)      -> Future{ JsBoolean(true) },
+        (__ \ "key4")(2)      -> Future{ Json.arr(1, 2, 3) }
       ).map(_.value), Duration("2 seconds")) must beEqualTo(
         Json.obj(
           "key1" -> Json.obj("key11" -> "toto", "key12" -> 234, "key13" -> JsNull),
@@ -491,14 +491,14 @@ object JsZipperMSpec extends Specification {
           "key4" -> Json.arr(true, 345.6, Json.arr(1, 2, 3), Json.obj("key411" -> Json.obj("key4111" -> 987.654)))
         )
       )
-    }  
+    }
 
     "build" in {
-      Await.result(JsZipperM.buildJsObject[Future]( 
-        __ \ "key1" \ "key11" -> future{JsString("toto")},
-        __ \ "key1" \ "key12" -> future{JsNumber(123L)},
-        (__ \ "key2")(0)      -> future{JsBoolean(true)},
-        __ \ "key3"           -> future{Json.arr(1, 2, 3)}
+      Await.result(JsZipperM.buildJsObject[Future](
+        __ \ "key1" \ "key11" -> Future{JsString("toto")},
+        __ \ "key1" \ "key12" -> Future{JsNumber(123L)},
+        (__ \ "key2")(0)      -> Future{JsBoolean(true)},
+        __ \ "key3"           -> Future{Json.arr(1, 2, 3)}
       ).map(_.value), Duration("2 seconds")) must beEqualTo(
         Json.obj(
           "key1" -> Json.obj(
@@ -510,12 +510,12 @@ object JsZipperMSpec extends Specification {
         ))
 
       Await.result(JsZipperM.buildJsArray[Future](
-         __(0) -> future{JsNumber(123.45)},
-         __(1) -> future{JsString("toto")}
+         __(0) -> Future{JsNumber(123.45)},
+         __(1) -> Future{JsString("toto")}
       ).map(_.value), Duration("2 seconds")) must beEqualTo(
         Json.arr(123.45, "toto")
       )
-    }  
+    }
   }
 }
 

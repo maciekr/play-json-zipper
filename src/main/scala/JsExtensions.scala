@@ -15,6 +15,8 @@
   */
 package play.api.libs.json
 
+import scala.language.higherKinds
+
 package object extensions {
 
 implicit class JsExtensions(val js: JsValue) extends AnyVal {

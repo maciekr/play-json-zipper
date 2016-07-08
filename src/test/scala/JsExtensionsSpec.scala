@@ -168,8 +168,8 @@ class JsExtensionsSpec extends Specification {
     "setM" in {
       Await.result(
         js.setM[Future](
-          (__ \ "key4")(2)        -> future{ JsNumber(765.23) },
-          (__ \ "key1" \ "key12") -> future{ JsString("toto") }
+          (__ \ "key4")(2)        -> Future{ JsNumber(765.23) },
+          (__ \ "key1" \ "key12") -> Future{ JsString("toto") }
         ),
         Duration("2 seconds")
       ) must beEqualTo(
@@ -189,7 +189,7 @@ class JsExtensionsSpec extends Specification {
     "updateM all by value" in {
       Await.result(
         js.filterUpdateAllByValueM[Future]( (_:JsValue) == JsString("TO_FIND") ){ js =>
-          future {
+          Future {
             val JsString(str) = js
             JsString(str + "2")
           }
@@ -213,9 +213,9 @@ class JsExtensionsSpec extends Specification {
     "updateM all by path/value" in {
       Await.result(
         js.updateAllM[Future]{
-          case ( __ \ "key1" \ "key11",                   JsString(str) ) => future { JsString(str + "2"): JsValue }
-          case ( (__ \ "key4")@@0,                        JsString(str) ) => future { JsString(str + "2"): JsValue }
-          case ( (__ \ "key4")@@3 \ "key411" \ "key4111", JsString(str) ) => future { JsString(str + "2"): JsValue }
+          case ( __ \ "key1" \ "key11",                   JsString(str) ) => Future { JsString(str + "2"): JsValue }
+          case ( (__ \ "key4")@@0,                        JsString(str) ) => Future { JsString(str + "2"): JsValue }
+          case ( (__ \ "key4")@@3 \ "key411" \ "key4111", JsString(str) ) => Future { JsString(str + "2"): JsValue }
           case (path, value) => Future.successful(value)
         },
         Duration("2 seconds")
@@ -364,7 +364,7 @@ class JsExtensionsSpec extends Specification {
 
     "use json pattern matching 4" in {
       Json.arr(1, 2, 3, 4) match {
-        case json"[ $v1, 2, $v2, 4]" => 
+        case json"[ $v1, 2, $v2, 4]" =>
           v1 must beEqualTo(JsNumber(1))
           v2 must beEqualTo(JsNumber(3))
           success
@@ -374,7 +374,7 @@ class JsExtensionsSpec extends Specification {
 
     "use json pattern matching 4bis" in {
       Json.arr(1, 2, 3, JsNull) match {
-        case json"[ 1, 2, 3, $v1]" => 
+        case json"[ 1, 2, 3, $v1]" =>
           v1 must beEqualTo(JsNull)
           success
         case _ => failure
@@ -387,14 +387,14 @@ class JsExtensionsSpec extends Specification {
       v2 must beEqualTo(JsNumber(3))
 
 
-      val json"""{ "key1" : $v3, "key2" : "value2", "key3" : $v4}""" = 
+      val json"""{ "key1" : $v3, "key2" : "value2", "key3" : $v4}""" =
           json"""{ "key1" : 123.23, "key2" : "value2", "key3" : "value3"}"""
       v3 must beEqualTo(JsNumber(123.23))
       v4 must beEqualTo(JsString("value3"))
 
       case class FooBar(key1: String, key2: Long)
       json"""{ "key1" : 123, "key2" : "value2", "key3" : "value3"}""" match {
-        case json"""{ "key1" : $v1, "key2" : "value2", "key3" : $v2 }""" => 
+        case json"""{ "key1" : $v1, "key2" : "value2", "key3" : $v2 }""" =>
           FooBar(v2.as[String], v1.as[Long])
           success
         case _ => failure

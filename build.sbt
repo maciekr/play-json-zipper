@@ -28,11 +28,16 @@ scmInfo :=
 
 scalaVersion := "2.11.8"
 
-/* TODO: Eventually enable fatal warnings. */
+/**
+ * Strict settings to avoid common bugs. Class files are limited in length to support builds on Windows.
+ */
 scalacOptions ++=
   "-feature" ::
-    // "-Xlint" ::
-    // "-Xfatal-warnings" ::
+    "-unchecked" ::
+    "-deprecation" ::
+    "-target:jvm-1.8" ::
+    "-Xfatal-warnings" ::
+    "-Xmax-classfile-name" :: "150" ::
     Nil
 
 scalacOptions ++=

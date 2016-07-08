@@ -120,7 +120,7 @@ res4: play.api.libs.json.JsValue = {"key1":{"key11":"TO_FIND","key12":"toto","ke
 
 ```scala
 scala> val maybeJs = js.updateAllM[Future]( (_:JsValue) == JsString("TO_FIND") ){ js =>
-  future {
+  Future {
     val JsString(str) = js
     JsString(str + "2")
   }
@@ -135,8 +135,8 @@ res6: play.api.libs.json.JsValue = {"key1":{"key11":"TO_FIND2","key12":123,"key1
 
 ```scala
 scala> val maybeArr = JsExtensions.buildJsArrayM[Future](
-  future { JsNumber(123.45) },
-  future { JsString("toto") }
+  Future { JsNumber(123.45) },
+  Future { JsString("toto") }
 )
 maybeArr: scala.concurrent.Future[play.api.libs.json.JsValue] = scala.concurrent.impl.Promise$DefaultPromise@220d48e4
 
