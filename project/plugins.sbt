@@ -1,3 +1,5 @@
+resolvers += "Era7 (releases)" at "https://s3-eu-west-1.amazonaws.com/releases.era7.com"
+
 addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.6.1")
 
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3")
