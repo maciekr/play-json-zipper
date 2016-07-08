@@ -63,7 +63,7 @@ crossScalaVersions :=
  * - Play JSON is marked as provided so as to allow users to specify their preference.
  */
 libraryDependencies ++=
-  "com.typesafe.play" %% "play-json" % "(,2.4[" % Provided ::
+  "com.typesafe.play" %% "play-json" % "(,2.5[" % Provided ::
     Nil
 
 libraryDependencies ++=
