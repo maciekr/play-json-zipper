@@ -82,7 +82,7 @@ s3credentials :=
   new ProfileCredentialsProvider(awsProfile.value) |
     new EnvironmentVariableCredentialsProvider()
 
-publishTo := Some(s3resolver.value("Ahlers Consulting", s3("michaelahlers-public/Artifacts")))
+publishTo := Some(s3resolver.value("Ahlers Consulting", s3("artifacts.ahlers.consulting")))
 
 val JsZipper =
   (project in file(".")).
