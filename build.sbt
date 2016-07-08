@@ -1,4 +1,7 @@
-organization := "com.github.michaelahlers"
+import com.amazonaws.auth.{EnvironmentVariableCredentialsProvider, InstanceProfileCredentialsProvider}
+import com.amazonaws.auth.profile.ProfileCredentialsProvider
+
+organization := "consulting.ahlers"
 
 name := "play-json-zipper"
 
@@ -7,7 +10,7 @@ description := "Tools for complex and powerful manipulations of Play JSON API st
 licenses += "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
 
 /** See [[https://github.com/mandubian/play-json-zipper Pascal's original project]]. */
-homepage := Some(url("http://github.com/michaelahlers/mandubian-play-json-zipper"))
+homepage := Some(url("http://github.com/michaelahlers/play-json-zipper"))
 
 startYear := Some(2013)
 
@@ -18,9 +21,9 @@ developers :=
 
 scmInfo :=
   Some(ScmInfo(
-    browseUrl = url("http://github.com/michaelahlers/mandubian-play-json-zipper"),
-    connection = "scm:git:https://github.com:michaelahlers/mandubian-play-json-zipper.git",
-    devConnection = Some("scm:git:git@github.com:michaelahlers/mandubian-play-json-zipper.git")
+    browseUrl = url("http://github.com/michaelahlers/play-json-zipper"),
+    connection = "scm:git:https://github.com:michaelahlers/play-json-zipper.git",
+    devConnection = Some("scm:git:git@github.com:michaelahlers/play-json-zipper.git")
   ))
 
 scalaVersion := "2.11.8"
@@ -56,7 +59,7 @@ crossScalaVersions :=
  * - Play JSON is marked as provided so as to allow users to specify their preference.
  */
 libraryDependencies ++=
-  "com.typesafe.play" %% "play-json" % "2.3.10" % Provided ::
+  "com.typesafe.play" %% "play-json" % "(,2.4[" % Provided ::
     Nil
 
 libraryDependencies ++=
@@ -69,42 +72,15 @@ publishMavenStyle := true
 /** Test artifacts are desired (as additional examples). */
 publishArtifact in Test := true
 
-publishTo := Some("releases" at "https://oss.sonatype.org/content/repositories/snapshots")
+awsProfile := "default"
 
-import ReleaseTransformations._
+s3credentials :=
+  new ProfileCredentialsProvider(awsProfile.value) |
+    new EnvironmentVariableCredentialsProvider()
 
-releaseProcess :=
-  Seq[ReleaseStep](
-    checkSnapshotDependencies,
-    inquireVersions,
-    runClean,
-    runTest,
-    setReleaseVersion,
-    commitReleaseVersion,
-    tagRelease,
-    ReleaseStep(
-      action = { state: State =>
-        /* FIXME: Reassigns this setting globally for the current session. */
-        publishTo := Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
+publishTo := Some(s3resolver.value("Ahlers Consulting", s3("michaelahlers-public/Artifacts")) withIvyPatterns)
 
-        Command.process(
-          "publishSigned", {
-            /* TODO: Stop being dumb and learn how to do this properly. */
-            // val extracted = Project.extract(state)
-            // extracted.append((publishTo := Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")) :: Nil, state)
-            state
-          }
-        )
-      },
-      enableCrossBuild = true
-    ),
-    setNextVersion,
-    commitNextVersion,
-    ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true),
-    pushChanges
-  )
-
-val root =
+val JsZipper =
   (project in file(".")).
     enablePlugins(BuildInfoPlugin).
     settings(
