@@ -16,7 +16,7 @@ jdk:
 sudo: false
 
 script:
-- sbt ++$TRAVIS_SCALA_VERSION coverage test publish
+- sbt ++$TRAVIS_SCALA_VERSION ';coverage;test;publish'
 
 after_success:
 - sbt coverageReport coveralls
