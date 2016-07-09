@@ -1,10 +1,14 @@
 language: scala
 
+scala:
+- 2.10.6
+- 2.11.8
+
 branches:
   only:
-    - v1.2.0.23
-    - v1.2.0.24
-    - v1.2.0.25
+  - v1.2.0.23
+  - v1.2.0.24
+  - v1.2.0.25
 
 jdk:
 - oraclejdk8
@@ -12,10 +16,9 @@ jdk:
 sudo: false
 
 script:
-- sbt coverage +test
+- sbt ++$TRAVIS_SCALA_VERSION coverage test publish
 
 after_success:
-- sbt +publish
 - sbt coverageReport coveralls
 
 cache:
