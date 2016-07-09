@@ -49,11 +49,11 @@ object Node {
   val empty = Node.Empty
 
   case object Empty extends Node {
-    override val value = JsNull //JsUndefined("undef")
+    override def value = throw new NoSuchElementException("undef")
   }
 
   case class Error(error: (JsPath, String)) extends Node {
-    override val value = JsNull //JsUndefined("error")
+    override def value = throw new NoSuchElementException("error")
   }
 
   def apply(key: String, value: JsValue): Node = KeyNode(key, value)
