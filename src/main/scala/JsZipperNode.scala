@@ -1,50 +1,45 @@
 /**
   * Copyright 2013 Pascal Voitot (@mandubian)
-  *
+  * 
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
   * You may obtain a copy of the License at
-  *
+  * 
   *     http://www.apache.org/licenses/LICENSE-2.0
-  *
+  * 
   * Unless required by applicable law or agreed to in writing, software
   * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-
+  
 package play.api.libs.json
 
 sealed trait Node {
-  def result: JsLookupResult
+  def value: JsValue
 
-  def filter(fn: JsValue => Boolean) = result match {
-    case JsDefined(value) => if (fn(value)) this else Node.empty
-    case _ => Node.empty
-  }
+  def filter(fn: JsValue => Boolean) = if(fn(value)) this else Node.empty
 
-  def isArray = result match {
-    case JsDefined(_: JsArray) => true
+  def isArray = value match {
+    case _: JsArray => true
     case _ => false
   }
 
-  def isObject = result match {
-    case JsDefined(_: JsObject) => true
+  def isObject = value match {
+    case _: JsObject => true
     case _ => false
   }
 
-  def isEmptyObjArr = result match {
-    case JsDefined(JsObject(fields)) if fields.isEmpty => true
-    case JsDefined(JsArray(value)) if value.isEmpty => true
+  def isEmptyObjArr = value match {
+    case JsObject(fields) if(fields.isEmpty) => true
+    case JsArray(value) if (value.isEmpty) => true
     case _ => false
   }
 
-  /* TODO: Determine if true is correct for defined non-object and non-array values (upstream returns false in all cases). */
-  def isValue = result match {
-    case JsDefined(_: JsObject) => false
-    case JsDefined(_: JsArray) => false
-    case JsDefined(_) => true
+  def isValue = value match {
+    case _: JsObject => false
+    case _: JsArray => false
     case _ => false
   }
 
@@ -54,20 +49,17 @@ object Node {
   val empty = Node.Empty
 
   case object Empty extends Node {
-    override val result = JsUndefined("undef")
+    override val value = JsUndefined("undef")
   }
 
   case class Error(error: (JsPath, String)) extends Node {
-    override val result = JsUndefined("error")
+    override val value = JsUndefined("error")
   }
 
   def apply(key: String, value: JsValue): Node = KeyNode(key, value)
   def apply(value: JsValue): Node = PlainNode(value)
 
-  def unapply(node: Node): Option[JsValue] = node.result match {
-    case JsDefined(value) => Some(value)
-    case _ => None
-  }
+  def unapply(node: Node): Option[JsValue] = Some(node.value)
 
   def copy(node: Node) = node match {
     case Node.Empty           => Node.Empty
@@ -89,14 +81,5 @@ object Node {
   }
 }
 
-case class KeyNode(key: String, override val result: JsLookupResult) extends Node
-
-object KeyNode {
-  def apply(key: String, value: JsValue): KeyNode = KeyNode(key, JsDefined(value))
-}
-
-case class PlainNode(override val result: JsLookupResult) extends Node
-
-object PlainNode {
-  def apply(value: JsValue): PlainNode = PlainNode(JsDefined(value))
-}
+case class KeyNode(val key: String, override val value: JsValue) extends Node
+case class PlainNode(override val value: JsValue) extends Node
