@@ -17,12 +17,12 @@ sudo: false
 
 script:
 - sbt ++$TRAVIS_SCALA_VERSION test publish
+# Following recommendations from http://scala-sbt.org/1.0/docs/Travis-CI-with-sbt.html.
+- find $HOME/.sbt -name "*.lock" | xargs rm
+- find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 
-# - Coverage resets the Scala version, despite SBT argument.
-#   - Therefore, perform coverage report and publish after successful test.
-#   - This is an optional step anyway.
-#   - Eventually, perform this after successful matrix (see travis-ci/travis-ci/issues#929).
 after_success:
+# Coverage resets the Scala version, despite SBT argument. Therefore, perform coverage report and publish after successful test. Eventually, perform this after successful matrix (see travis-ci/travis-ci/issues#929).
 - sbt clean coverage test coverageReport coveralls
 
 cache:
