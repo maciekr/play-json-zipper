@@ -21,6 +21,7 @@ script:
 # - Coverage resets the Scala version, despite SBT argument.
 #   - Therefore, perform coverage report and publish after successful test.
 #   - This is an optional step anyway.
+#   - Eventually, perform this after successful matrix (see travis-ci/travis-ci/issues#929).
 after_success:
 - sbt clean coverage test coverageReport coveralls
 
