@@ -12,10 +12,11 @@ jdk:
 sudo: false
 
 script:
-- sbt +test
+- sbt coverage +test
 
 after_success:
 - sbt +publish
+- sbt coverageReport coveralls
 
 cache:
   directories:
