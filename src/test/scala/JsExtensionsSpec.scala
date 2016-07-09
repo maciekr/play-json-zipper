@@ -237,7 +237,7 @@ class JsExtensionsSpec extends Specification {
     "update one path" in {
       js.update(
         (__ \ "key4")(3) \ "key411",
-        { js => val JsString(str) = js \ "key4111"; JsString(str+"123") }
+        { js => val JsString(str) = js \ "key4111" get; JsString(str+"123") }
       ) must beEqualTo(
         Json.obj(
           "key1" -> Json.obj(
@@ -256,7 +256,7 @@ class JsExtensionsSpec extends Specification {
     "update path not found" in {
       js.update(
         (__ \ "key5"),
-        { js => val JsString(str) = js \ "key4111"; JsString(str+"123") }
+        { js => val JsString(str) = js \ "key4111" get; JsString(str+"123") }
       ) must beEqualTo(js)
     }
 
@@ -275,7 +275,7 @@ class JsExtensionsSpec extends Specification {
         )
       )
       obj.updateAllKeyNodes{
-        case ((_ \ "_id"), value) => ("id" -> value \ "$oid")
+        case ((_ \ "_id"), value) => ("id" -> (value \ "$oid").get)
       } must beEqualTo(
         Json.obj(
           "id" -> "1234",
