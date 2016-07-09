@@ -15,8 +15,8 @@ script:
 - sbt coverage +test
 
 after_success:
-- sbt +publish
 - sbt coverageReport coveralls
+- sbt +publish
 
 cache:
   directories:
