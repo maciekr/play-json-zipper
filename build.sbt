@@ -37,19 +37,8 @@ scalacOptions ++=
     "-deprecation" ::
     "-Xfatal-warnings" ::
     "-Xmax-classfile-name" :: "150" ::
+    "-target:jvm-1.8" ::
     Nil
-
-scalacOptions ++=
-  (CrossVersion.partialVersion(scalaVersion.value) match {
-
-    case Some((2, minor)) if 11 <= minor =>
-      "-target:jvm-1.8" ::
-        Nil
-
-    case _ =>
-      Nil
-
-  })
 
 scalacOptions in Test ++=
   Nil
@@ -63,7 +52,7 @@ scalacOptions in Test ++=
  * - Play JSON is marked as provided so as to allow users to specify their preference.
  */
 libraryDependencies ++=
-  "com.typesafe.play" %% "play-json" % "(,2.5[" % Provided ::
+  "com.typesafe.play" %% "play-json" % "(,2.6[" % Provided ::
     Nil
 
 libraryDependencies ++=

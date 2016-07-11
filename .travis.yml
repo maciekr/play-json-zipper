@@ -1,12 +1,11 @@
 language: scala
 
 scala:
-- 2.10.6
 - 2.11.8
 
 branches:
   only:
-  - v1.2.0.24
+  - v1.2.0.25
 
 jdk:
 - oraclejdk8
