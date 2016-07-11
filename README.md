@@ -1,4 +1,4 @@
-# JsZipper [![Build Status](https://travis-ci.org/michaelahlers/play-json-zipper.svg?branch=v1.2.0.24)](https://travis-ci.org/michaelahlers/play-json-zipper) [![Coverage Status](https://coveralls.io/repos/github/michaelahlers/play-json-zipper/badge.svg?branch=v1.2.0.24)](https://coveralls.io/github/michaelahlers/play-json-zipper?branch=v1.2.0.24)
+# JsZipper [![Build Status](https://travis-ci.org/michaelahlers/play-json-zipper.svg?branch=v1.2.0.25)](https://travis-ci.org/michaelahlers/play-json-zipper) [![Coverage Status](https://coveralls.io/repos/github/michaelahlers/play-json-zipper/badge.svg?branch=v1.2.0.25)](https://coveralls.io/github/michaelahlers/play-json-zipper?branch=v1.2.0.25)
 
 See [this project's wiki](https://github.com/michaelahlers/play-json-zipper/wiki) for installation instructions, and project rationale.
 
