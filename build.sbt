@@ -54,10 +54,10 @@ scalacOptions ++=
 scalacOptions in Test ++=
   Nil
 
-//crossScalaVersions :=
-//  "2.10.6" ::
-//    "2.11.8" ::
-//    Nil
+crossScalaVersions :=
+  "2.10.6" ::
+    "2.11.8" ::
+    Nil
 
 /**
  * - Play JSON is marked as provided so as to allow users to specify their preference.
