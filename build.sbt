@@ -43,9 +43,9 @@ scalacOptions ++=
 scalacOptions in Test ++=
   Nil
 
+/* TODO: Restore for eventual 2.12 support. */
 //crossScalaVersions :=
-//  "2.10.6" ::
-//    "2.11.8" ::
+//  "2.11.8" ::
 //    Nil
 
 /**
